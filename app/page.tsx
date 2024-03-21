@@ -1,95 +1,67 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import { Box, Button, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import {  useEffect, useState} from "react";
+import { updateAccount } from "@/public/utils/updateAccount";
+import { userAccountTypes } from "@/public/types/userAccountTypes";
 
 export default function Home() {
+
+  const router = useRouter()
+  const [userAccount, setUserAccount] = useState<userAccountTypes>(null)
+  useEffect(() => {
+    if(userAccount) {
+      router.push('/Wallet')
+      console.log(userAccount)
+    }
+  }, [userAccount])
+
+  const onConnection = () => {
+      if (typeof window.ethereum) {
+        updateAccount(setUserAccount)
+      }else{
+        alert('Установите расширение MetaMask для вашего браузера!')
+      }
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+   <>
+   <Box sx={{
+    m: 'auto',
+    mt: '15%',
+    width: 600, 
+    height: 350, 
+    border:'1px solid black', 
+    borderRadius: 3,
+    display: 'flex',
+    flexDirection: 'column' ,
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    textAlign: 'center',
+    gap: 2,
+    }}>
+        <Typography gutterBottom variant="h5" component="div">
+            Здравствуйте!
+        </Typography>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <Typography variant="body1" color="text.secondary">
+          Для того чтобы отображалась информация вашего счета необходимо подключиться к вашему аккаунту Metamask.
+        </Typography>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <Button
+         onClick={() => onConnection()}
+         sx={{
+          background: '#E79D0E', 
+          color: 'white', 
+          padding: 1,
+          ":hover":{background: '#C18E2A'}}}>
+          Подключить кошелёк
+        </Button>
+   </Box>
+   </>
   );
 }
+
+
+
